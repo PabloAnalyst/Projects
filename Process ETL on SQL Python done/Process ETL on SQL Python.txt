@@ -1,0 +1,69 @@
+import pandas as pd
+import os
+import glob
+
+# Load the files
+base_path = r"C:\Analysis Files"
+df1 = pd.read_excel(f"{base_path}\A1.xlsx")
+df2 = pd.read_csv(f"{base_path}\A2.csv", encoding='latin1')
+df3 = pd.read_csv(f"{base_path}\A3.csv", encoding='latin1', delimiter=';')
+df4 = pd.read_csv(f"{base_path}\A4", encoding='latin1')
+df5 = pd.read_excel(f"{base_path}\A5.xlsx")
+df6 = pd.read_csv(f"{base_path}\\A6", encoding='latin1')
+
+# Verify that DataFrames were loaded correctly
+print("a1:\n", allmdr.head())
+print("a2:\n", allraa.head())
+print("a3:\n", ldr.head())
+print("a4:\n", licenses.head())
+print("a5:\n", mrs.head())
+print("a6:\n", variants.head())
+
+# Load multiple files in a single dataframe
+folder_path = r'C:\Bulk Files'
+csv_files = glob.glob(os.path.join(folder_path, "*.csv"))
+# Create a list to store DataFrames
+dataframes = []
+
+# Read each CSV file and add it to the list of DataFrames
+for file in csv_files:
+    try:
+        df = pd.read_csv(file, encoding='ISO-8859-1')  # Change encoding here if necessary
+        df['Column1'] = os.path.basename(file).replace('.csv', '')  # Rename the column and remove .csv
+        dataframes.append(df)
+    except Exception as e:
+        print(f"Error reading file {file}: {e}")
+bulk_files = pd.concat(dataframes, ignore_index=True)
+print(bulk_files)
+
+
+#Select only the variables that are necessary for the analysis
+columns_to_keep = [
+    'c4', 'c6', 'c8', 'c2', 'c6', 
+    'c22', 'c12']
+df1 = df1[columns_to_keep]
+##
+columns_to_keep = [
+    'c5', 'c7', 'c1', 'c12', 'c15', 
+    'c15', 'c8']
+df2 = df2[columns_to_keep]
+
+##.........
+
+# Save each DataFrame as a CSV file
+dataframes = {
+    'df1': df1,
+    'df2': df2,
+    'df3': df3,
+    'df4': df4,
+    'df5': df5,
+    'df6': df6,
+    'df7': df7,
+}
+
+path = r'C:\Result'
+
+for name, df in dataframes.items():
+    df.to_csv(f"{path}\\{name}.csv", index=False)
+
+print("CSV files saved successfully.")

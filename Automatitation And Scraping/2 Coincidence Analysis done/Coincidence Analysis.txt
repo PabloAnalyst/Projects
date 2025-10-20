@@ -1,0 +1,28 @@
+# Jupyter Notebook
+
+import pandas as pd
+
+# Load Files
+df1 = pd.read_excel(r'C:\df1.xlsx', dtype=str)
+df2 = pd.read_excel(r'C:\df2.xlsx', dtype=str)
+df1 = df1.astype(str)
+df2 = df2.astype(str)
+
+  # Coincidence Analysis
+
+def find_matches(row):
+    strategy = row['A']
+    license = row['B']
+    tf = row['C']
+    matches = df2[(df2['ABC'].str.contains(A)) &
+                  (df2['ABC'].str.contains(B)) &
+                  (df2['ABC'].str.contains(C))]['Result_ID'].tolist()
+    return ', '.join(matches)
+
+# Create a new column
+df1['Result_ID'] = df1.apply(find_matches, axis=1)
+
+#Download New df With Result_ID
+file_name = 'NEW_df.xlsx'
+df1.to_excel(file_name, index=False)
+files.download(file_name)
